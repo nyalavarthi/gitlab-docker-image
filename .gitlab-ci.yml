@@ -1,0 +1,32 @@
+image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+stages:
+  - build
+
+# =============================================================================
+# Before script part
+# =============================================================================
+before_script:
+  # Set up proxies if you are behind a company proxy  
+  - echo "Build code"
+  - export http_proxy="$CODE_PROXY"
+  - export https_proxy="$CODE_PROXY"
+  - export no_proxy="127.0.0.1,localhost,.companyxxx.com,.companyxxx.net
+  - export HTTP_PROXY="$http_proxy"
+  - export HTTPS_PROXY="$http_proxy"
+  - export NO_PROXY="$no_proxy"
+
+# =============================================================================
+# Build section master
+# =============================================================================
+build:docker-opa:master:
+  stage: build
+  only:
+    - master
+  script:
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile
+      --destination docker.companyxxx.com/narendra.yalavarthi.ext/opaimage/opa-image:$CI_PIPELINE_ID
+      # this is where the custom docker image is going to be created with in gitlab 
+      --destination docker.companyxxx.com/repo path to custom images --/opaimage/opa-image:latest
