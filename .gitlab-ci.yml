@@ -12,7 +12,7 @@ before_script:
   - echo "Build code"
   - export http_proxy="$CODE_PROXY"
   - export https_proxy="$CODE_PROXY"
-  - export no_proxy="127.0.0.1,localhost,.companyxxx.com,.companyxxx.net
+  - export no_proxy="127.0.0.1,localhost,.companyxxx.com,.companyxxx.net"
   - export HTTP_PROXY="$http_proxy"
   - export HTTPS_PROXY="$http_proxy"
   - export NO_PROXY="$no_proxy"
